@@ -35,11 +35,15 @@ class WP_REST_Taxonomy_Search_Handler extends WP_REST_Search_Handler {
 		if ( in_array( WP_REST_Search_Controller::TYPE_ANY, $taxonomy_types, true ) ) {
 			$taxonomy_types = $this->subtypes;
 		}
+
+		$offset = ( $request['page'] - 1 ) * $request['per_page'];
+
 		$query_args = array(
 			'taxonomy'           	=> $taxonomy_types,
 			// Replace paged with offset
 			//'paged'               	=> (int) $request['page'],
 			'number'      			=> (int) $request['per_page'],
+			'offset'				=> (int) $offset,
 			'fields'              	=> 'ids',
 		);
 		if ( ! empty( $request['search'] ) ) {
