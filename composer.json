@@ -1,0 +1,11 @@
+{
+    "name": "jojojjjooo/better-wp-rest-search",
+    "description": "Better WP Rest Search",
+    "authors": [
+        {
+            "name": "Johannes Kinast",
+            "email": "johannes.kinast@gmail.com"
+        }
+    ],
+    "require": {}
+}
