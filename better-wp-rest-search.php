@@ -5,7 +5,7 @@
  * Description:  Better WP REST Search for Gutenberg
  * Author:       Johannes Kinast <johannes@travel-dealz.de>
  * Author URI:   http://
- * Version:     0.0.1
+ * Version:     1.0.0
  */
 
 add_filter( 'wp_rest_search_handlers', 'better_wp_rest_search_handlers' );
