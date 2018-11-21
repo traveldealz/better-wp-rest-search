@@ -45,6 +45,7 @@ class WP_REST_Taxonomy_Search_Handler extends WP_REST_Search_Handler {
 			'number'      			=> (int) $request['per_page'],
 			'offset'				=> (int) $offset,
 			'fields'              	=> 'ids',
+			'hide_empty'			=> false,
 		);
 		if ( ! empty( $request['search'] ) ) {
 			$query_args['search'] = $request['search'];
