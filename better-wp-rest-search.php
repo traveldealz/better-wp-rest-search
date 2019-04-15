@@ -35,12 +35,12 @@ function better_wp_rest_search_parameters( $result, $server, $request ) {
 
 		$supported = [
 			'tax' => 'taxonomy',
+			'ter' => 'taxonomy',
 			'pl' => 'prettylink',
 		];
 
 		$matches = [];
 		preg_match( '/^-(\w{2,3}) (.*)/', $request->get_param( 'search' ), $matches );
-
 		if ( 3 === count( $matches ) && isset( $supported[$matches[1]] ) ) {
 
 			$request->set_param( 'type', $supported[$matches[1]] );
