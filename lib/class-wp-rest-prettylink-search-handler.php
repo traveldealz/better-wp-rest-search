@@ -69,6 +69,11 @@ class WP_REST_Prettylink_Search_Handler extends WP_REST_Search_Handler {
 	 */
 	public function prepare_item( $id, array $fields ) {
 		$link = prli_get_link( $id );
+
+		if ( ! $link ) {
+			return [];
+		}
+
 		$data = array();
 		if ( in_array( WP_REST_Search_Controller::PROP_ID, $fields, true ) ) {
 			$data[ WP_REST_Search_Controller::PROP_ID ] = (int) $link->id;
