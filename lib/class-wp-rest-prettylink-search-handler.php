@@ -33,9 +33,10 @@ class WP_REST_Prettylink_Search_Handler extends WP_REST_Search_Handler {
 		$query_args = array(
 			'perpage'      			=> (int) $request['per_page'],
 			'offset'				=> (int) $offset,
+			'search'				=> '',
 		);
 
-		if ( ! empty( $request['search'] ) ) {
+		if ( ! empty($request['search'] ) ) {
 			$query_args['search'] = $request['search'];
 		}
 
