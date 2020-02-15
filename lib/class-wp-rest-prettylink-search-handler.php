@@ -43,7 +43,7 @@ class WP_REST_Prettylink_Search_Handler extends WP_REST_Search_Handler {
 		global $wpdb;
 
 		$query = $wpdb->prepare(
-			"SELECT id FROM `{$wpdb->base_prefix}prli_links` WHERE slug LIKE %s ORDER BY CHAR_LENGTH(slug) LIMIT %d,%d",
+			"SELECT id FROM `{$wpdb->prefix}prli_links` WHERE slug LIKE %s ORDER BY CHAR_LENGTH(slug) LIMIT %d,%d",
 			'%' . urlencode( $query_args['search'] ) . '%',
 			$query_args['offset'],
 			$query_args['perpage']
