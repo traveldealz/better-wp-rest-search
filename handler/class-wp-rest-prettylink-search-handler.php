@@ -1,4 +1,11 @@
 <?php
+namespace Better_WP_REST_Search\Handler;
+
+use WP_REST_Search_Handler;
+use WP_REST_Request;
+use WP_REST_Search_Controller;
+use WP_Query;
+
 /**
  * REST API: WP_REST_Taxonomy_Search_Handler class
  *
@@ -51,9 +58,8 @@ class WP_REST_Prettylink_Search_Handler extends WP_REST_Search_Handler {
 
 		$found_ids = array_column( $wpdb->get_results( $query ), 'id' );
 
-		// ToDo
-		//$total     = $query->found_posts;
-		$total = 20;
+		$total = count( $found_ids );
+
 		return array(
 			self::RESULT_IDS   => $found_ids,
 			self::RESULT_TOTAL => $total,
@@ -74,7 +80,7 @@ class WP_REST_Prettylink_Search_Handler extends WP_REST_Search_Handler {
 			return [];
 		}
 
-		$data = array();
+		$data = [];
 		if ( in_array( WP_REST_Search_Controller::PROP_ID, $fields, true ) ) {
 			$data[ WP_REST_Search_Controller::PROP_ID ] = (int) $link->id;
 		}

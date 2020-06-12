@@ -1,4 +1,11 @@
 <?php
+namespace Better_WP_REST_Search\Handler;
+
+use WP_REST_Search_Handler;
+use WP_REST_Request;
+use WP_REST_Search_Controller;
+use WP_Term_Query;
+
 /**
  * REST API: WP_REST_Taxonomy_Search_Handler class
  *
@@ -47,18 +54,23 @@ class WP_REST_Taxonomy_Search_Handler extends WP_REST_Search_Handler {
 			'fields'              	=> 'ids',
 			'hide_empty'			=> false,
 		);
+
 		if ( ! empty( $request['search'] ) ) {
 			$query_args['search'] = $request['search'];
 		}
+
 		$query     = new WP_Term_Query();
 		$found_ids = $query->query( $query_args );
-		// ToDo
-		//$total     = $query->found_posts;
-		$total = 10;
-		return array(
+
+		$total = $offset + count( $found_ids );
+		if ( count( $found_ids ) === (int) $request['per_page'] ) {
+			$total = $total + 1;
+		}
+
+		return [
 			self::RESULT_IDS   => $found_ids,
 			self::RESULT_TOTAL => $total,
-		);
+		];
 	}
 	/**
 	 * Prepares the search result for a given ID.
@@ -70,12 +82,14 @@ class WP_REST_Taxonomy_Search_Handler extends WP_REST_Search_Handler {
 	 */
 	public function prepare_item( $id, array $fields ) {
 		$term = get_term( $id );
-		$data = array();
+
+		$data = [];
+
 		if ( in_array( WP_REST_Search_Controller::PROP_ID, $fields, true ) ) {
 			$data[ WP_REST_Search_Controller::PROP_ID ] = (int) $term->term_id;
 		}
 		if ( in_array( WP_REST_Search_Controller::PROP_TITLE, $fields, true ) ) {
-			$data[ WP_REST_Search_Controller::PROP_TITLE ] = $term->name . ' (' . get_taxonomy( $term->taxonomy )->labels->singular_name . ')';
+			$data[ WP_REST_Search_Controller::PROP_TITLE ] = $term->name;
 		}
 		if ( in_array( WP_REST_Search_Controller::PROP_URL, $fields, true ) ) {
 			$data[ WP_REST_Search_Controller::PROP_URL ] = get_term_link( $term );
@@ -84,10 +98,12 @@ class WP_REST_Taxonomy_Search_Handler extends WP_REST_Search_Handler {
 			$data[ WP_REST_Search_Controller::PROP_TYPE ] = $this->type;
 		}
 		if ( in_array( WP_REST_Search_Controller::PROP_SUBTYPE, $fields, true ) ) {
-			$data[ WP_REST_Search_Controller::PROP_SUBTYPE ] = $term->taxonomy;
+			$data[ WP_REST_Search_Controller::PROP_SUBTYPE ] = get_taxonomy( $term->taxonomy )->labels->singular_name;
 		}
+
 		return $data;
 	}
+
 	/**
 	 * Prepares links for the search result of a given ID.
 	 *
@@ -97,25 +113,31 @@ class WP_REST_Taxonomy_Search_Handler extends WP_REST_Search_Handler {
 	 */
 	public function prepare_item_links( $id ) {
 		$term = get_term( $id );
-		$links = array();
-		/*$item_route = $this->detect_rest_item_route( $term );
+
+		$links = [];
+		return $links;
+
+		$item_route = $this->detect_rest_item_route( $term );
 		if ( ! empty( $item_route ) ) {
-			$links['self'] = array(
+			$links['self'] = [
 				'href'       => rest_url( $item_route ),
 				'embeddable' => true,
-			);
-		}*/
-		$links['about'] = array(
+			];
+		}
+
+		$links['about'] = [
 			'href' => rest_url( 'wp/v2/taxonomies/' . $term->taxonomy ),
-		);
+		];
+
 		return $links;
 	}
+
 	/**
 	 * Attempts to detect the route to access a single item.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @param WP_Post $post Post object.
+	 * @param WP_Term $term Term object.
 	 * @return string REST route relative to the REST base URI, or empty string if unknown.
 	 */
 	protected function detect_rest_item_route( $post ) {
