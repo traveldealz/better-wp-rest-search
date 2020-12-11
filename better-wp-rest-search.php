@@ -11,6 +11,7 @@ namespace Better_WP_REST_Search;
 
 use Better_WP_REST_Search\Handler\WP_REST_Taxonomy_Search_Handler;
 use Better_WP_REST_Search\Handler\WP_REST_Prettylink_Search_Handler;
+use Better_WP_REST_Search\Handler\WP_REST_Unsupported_Handler;
 
 function wp_rest_search_handlers( $handlers ) {
 
@@ -21,6 +22,10 @@ function wp_rest_search_handlers( $handlers ) {
 	// Add Pretty Link Handler
 	require_once __DIR__ . '/handler/class-wp-rest-prettylink-search-handler.php';
 	$handlers[] = new WP_REST_Prettylink_Search_Handler();
+
+	// Add Unsupported
+	require_once __DIR__ . '/handler/class-wp-rest-unsupported-handler.php';
+	$handlers[] = new WP_REST_Unsupported_Handler();
 
 	return $handlers;
 }
@@ -41,6 +46,11 @@ function change_search_type( $result, $server, $request ) {
 	$matches = [];
 	preg_match( '/^-(\w{2,3}) (.*)/', $request->get_param( 'search' ), $matches );
 	if ( 3 === count( $matches ) && isset( $supported[$matches[1]] ) ) {
+
+		if ( 'term' !== $request->get_param( 'type' ) ) {
+			$request->set_param( 'type', 'unsupported' );
+			return $result;
+		}
 
 		$request->set_param( 'type', $supported[$matches[1]] );
 		$request->set_param( 'search', $matches[2] );
