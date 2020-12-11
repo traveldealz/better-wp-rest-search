@@ -9,15 +9,10 @@
  */
 namespace Better_WP_REST_Search;
 
-use Better_WP_REST_Search\Handler\WP_REST_Taxonomy_Search_Handler;
 use Better_WP_REST_Search\Handler\WP_REST_Prettylink_Search_Handler;
 use Better_WP_REST_Search\Handler\WP_REST_Unsupported_Handler;
 
 function wp_rest_search_handlers( $handlers ) {
-
-	// Add Taxonomy Handler
-	require_once __DIR__ . '/handler/class-wp-rest-taxonomy-search-handler.php';
-	$handlers[] = new WP_REST_Taxonomy_Search_Handler();
 
 	// Add Pretty Link Handler
 	require_once __DIR__ . '/handler/class-wp-rest-prettylink-search-handler.php';
@@ -38,8 +33,8 @@ function change_search_type( $result, $server, $request ) {
 	}
 
 	$supported = [
-		'tax' => 'taxonomy',
-		'ter' => 'taxonomy',
+		'tax' => 'term',
+		'ter' => 'term',
 		'pl' => 'prettylink',
 	];
 
