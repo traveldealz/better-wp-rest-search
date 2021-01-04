@@ -1,17 +1,17 @@
 {
-    "name": "jojojjjooo/better-wp-rest-search",
+    "name": "goaround/better-wp-rest-search",
 	"description": "WordPress Plugin: Better WP Rest Search",
 	"type": "wordpress-plugin",
 	"repositories": [
 		{
 			"type": "composer",
-			"url": "http://wpackagist.org"
+			"url": "https://wpackagist.org"
 		}
 	],
     "authors": [
         {
             "name": "Johannes Kinast",
-            "email": "johannes.kinast@gmail.com"
+            "email": "johannes@kinast.me"
         }
     ],
 	"require": {
