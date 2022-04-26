@@ -13,8 +13,5 @@
             "name": "Johannes Kinast",
             "email": "johannes@kinast.me"
         }
-    ],
-	"require": {
-		"composer/installers": "^2.1"
-	}
+    ]
 }
