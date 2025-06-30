@@ -39,7 +39,7 @@ function change_search_type( $result, $server, $request ) {
 	];
 
 	$matches = [];
-	preg_match( '/^-(\w{2,3}) (.*)/', $request->get_param( 'search' ), $matches );
+	preg_match( '/^-(\w{2,3}) (.*)/', $request->get_param( 'search' ) ?: '', $matches );
 	if ( 3 === count( $matches ) && isset( $supported[$matches[1]] ) ) {
 
 		if ( 'term' !== $request->get_param( 'type' ) ) {
